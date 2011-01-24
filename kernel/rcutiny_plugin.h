@@ -859,6 +859,7 @@ void exit_rcu(void)
 
 #ifdef CONFIG_RCU_TRACE
 
+#ifndef CONFIG_CLASSIC_RCU
 /*
  * Because preemptible RCU does not exist, it is not necessary to
  * dump out its statistics.
@@ -901,6 +902,7 @@ static void rcu_preempt_remove_callbacks(struct rcu_ctrlblk *rcp)
 static void rcu_preempt_process_callbacks(void)
 {
 }
+#endif /* CONFIG_CLASSIC_RCU */
 
 #endif /* #else #ifdef CONFIG_TINY_PREEMPT_RCU */
 
