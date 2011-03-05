@@ -33,6 +33,8 @@
 #ifndef __LINUX_RCUCLASSIC_H
 #define __LINUX_RCUCLASSIC_H
 
+extern void rcu_init(void);
+
 #include <linux/cache.h>
 #include <linux/spinlock.h>
 #include <linux/threads.h>
@@ -175,7 +177,7 @@ static inline void rcu_scheduler_starting(void)
 
 #define rcu_init_sched()	do { } while (0)
 
-static inline void synchronize_rcu_expedited(void)
+static inline void synchronize_sched_expedited(void)
 {
         synchronize_sched();
 }

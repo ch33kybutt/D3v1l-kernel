@@ -32,6 +32,7 @@
 #define RCU_TRACE(stmt)
 #endif /* #else #ifdef CONFIG_RCU_TRACE */
 
+#ifndef CONFIG_CLASSIC_RCU
 /* Global control variables for rcupdate callback mechanism. */
 struct rcu_ctrlblk {
 	struct rcu_head *rcucblist;	/* List of pending callbacks (CBs). */
@@ -50,6 +51,8 @@ static struct rcu_ctrlblk rcu_bh_ctrlblk = {
 	.donetail	= &rcu_bh_ctrlblk.rcucblist,
 	.curtail	= &rcu_bh_ctrlblk.rcucblist,
 };
+
+#endif /* CONFIG_CLASSIC_RCU */
 
 #ifdef CONFIG_DEBUG_LOCK_ALLOC
 int rcu_scheduler_active __read_mostly;
