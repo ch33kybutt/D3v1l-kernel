@@ -983,7 +983,7 @@ static int register_root_hub(struct usb_hcd *hcd)
 		spin_unlock_irq (&hcd_root_hub_lock);
 
 		/* Did the HC die before the root hub was registered? */
-		if (HCD_DEAD(hcd) || hcd->state == HC_STATE_HALT)
+		if (HCD_DEAD(hcd))
 			usb_hc_died (hcd);	/* This time clean up */
 	}
 
@@ -1885,7 +1885,7 @@ void usb_free_streams(struct usb_interface *interface,
 
 	/* Streams only apply to bulk endpoints. */
 	for (i = 0; i < num_eps; i++)
-		if (!usb_endpoint_xfer_bulk(&eps[i]->desc))
+		if (!eps[i] || !usb_endpoint_xfer_bulk(&eps[i]->desc))
 			return;
 
 	hcd->driver->free_streams(hcd, dev, eps, num_eps, mem_flags);
@@ -2103,9 +2103,6 @@ irqreturn_t usb_hcd_irq (int irq, void *__hcd)
 		rc = IRQ_NONE;
 	} else {
 		set_bit(HCD_FLAG_SAW_IRQ, &hcd->flags);
-
-		if (unlikely(hcd->state == HC_STATE_HALT))
-			usb_hc_died(hcd);
 		rc = IRQ_HANDLED;
 	}
 
